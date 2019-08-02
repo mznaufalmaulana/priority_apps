@@ -30,9 +30,6 @@
 									</button>
 								</form>
 								<div class="text-center">
-									<a class="small" href="forgot-password.html">Lupa Password?</a>
-								</div>
-								<div class="text-center">
 									<a class="small" href="<?= BASE_URL . 'auth/register' ?>">Buat Akun Baru!</a>
 								</div>
 							</div>

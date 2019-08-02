@@ -10,6 +10,7 @@ class Auth extends CI_Controller
     $this->load->library('form_validation');
     $this->load->helper('form');
     $this->load->helper('url');
+    $this->load->model('m_project', 'm');
   }
   public function index()
   {
@@ -92,6 +93,56 @@ class Auth extends CI_Controller
       $this->db->insert('data_user', $data);
       $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert"> Selamat! Akun Anda Berhasil Terdaftar, Silahkan Lakukan Login untuk Dapat Menggunakan Sistem </div>');
       redirect('/auth');
+    }
+  }
+  public function profil()
+  {
+    $id = $this->session->userdata('id');
+    $data['user'] = $this->db->get_where('data_user', ['id' => $id])->row_array();
+    $data['judul'] = 'Priority Apps - Profil';
+    $data['judul_halaman'] = 'Profil';
+
+    $this->db->select('*');
+    $this->db->from('data_proyek');
+    $this->db->where_in('id_user', $id);
+    $hasil = $this->db->get();
+    $data['proyek'] = $hasil->result();
+    $this->load->view('templates/header', $data);
+    $this->load->view('templates/sidebar', $data);
+    $this->load->view('templates/topbar', $data);
+    $this->load->view('auth/profil', $data);
+    $this->load->view('templates/footer', $data);
+  }
+  public function edit_profil()
+  {
+    $this->form_validation->set_rules('password', 'Password', 'required|trim|matches[data_user.password]', [
+      'required' => "Masukkan Kata Sandi Anda",
+      'matches' => "Maaf! Kata Sandi Salah"
+    ]);
+
+    $id = $this->session->userdata('id');
+    $data['user'] = $this->db->get_where('data_user', ['id' => $id])->row_array();
+    if ($this->form_validation->run() == false) {
+      $data['judul'] = 'Priority Apps - Edit Profil';
+      $data['judul_halaman'] = 'Profil';
+      $data['proyek'] = $this->m->get_all_project($id);
+      $this->load->view('templates/header', $data);
+      $this->load->view('templates/sidebar', $data);
+      $this->load->view('templates/topbar', $data);
+      $this->load->view('auth/edit_profil', $data);
+      $this->load->view('templates/footer', $data);
+    } else {
+      $password = $this->input->post('password');
+      $user = $this->db->get_where('data_user', ['id' => $id])->row_array();
+      if (password_verify($password, $user['password'])) {
+        $data = [
+          'nama_depan' => htmlspecialchars($this->input->post('nama_depan', true)),
+          'nama_belakang' => htmlspecialchars($this->input->post('nama_belakang', true))
+        ];
+        $this->db->where('id', $id);
+        $this->db->update('data_user', $data);
+        redirect('auth/profil');
+      }
     }
   }
   public function logout()

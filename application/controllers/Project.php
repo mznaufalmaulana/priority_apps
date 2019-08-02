@@ -10,6 +10,7 @@ class Project extends CI_Controller
         $this->load->library('form_validation');
         $this->load->helper('form');
         $this->load->helper('url');
+        $this->load->model('m_project', 'm');
     }
     public function index()
     {
@@ -82,6 +83,9 @@ class Project extends CI_Controller
         $id_proyek = $this->uri->segment(3, 0);
         $id = $this->session->userdata('id');
         $data['data_proyek'] = $this->db->get_where('data_proyek', ['id_proyek' => $id_proyek])->row_array();
+
+        $result = $this->db->get_where('data_voting', ['id_proyek' => $id_proyek]);
+        $data['data_voting'] = $result->num_rows();
 
         $this->db->select('*');
         $this->db->from('data_kebutuhan');
@@ -162,19 +166,10 @@ class Project extends CI_Controller
         $data['pemilik'] = $input['pemilik'];
 
         if ($input['kebutuhan'] != null && $input['pemilik'] != null) {
-            $this->db->insert('temp_data_kebutuhan', $data);
+            $this->m->set_req($data);
         }
         $data_kebutuhan = $this->db->get_where('temp_data_kebutuhan', ['id_proyek' => $input['id_proyek']])->result();
 
-        // $no = 1;
-        // foreach ($data_kebutuhan as $val) {
-        //     $message .= "<tr>" .
-        //         "<td align=\"center\">" . $no . "</td>
-        //                         <td>" . $val->kalimat_kebutuhan . "</td>
-        //                         <td>" . $val->pemilik . "</td>" +
-        //         "</tr>";
-        //     $no++;
-        // }
         echo json_encode($data_kebutuhan);
     }
 
@@ -267,7 +262,7 @@ class Project extends CI_Controller
     }
 
     //mengabil data voting
-    public function get_data_voting()
+    public function Get_Data_Voting()
     {
         $id_proyek = $this->input->post('id_proyek');
 
@@ -275,6 +270,16 @@ class Project extends CI_Controller
         $this->db->from('data_kebutuhan');
         $this->db->where('id_proyek', $id_proyek);
         $data = $this->db->get()->result();
+
+        echo json_encode($data);
+    }
+    public function Get_Total_Voting()
+    {
+        $id_proyek = $this->input->post('id_proyek');
+
+        $result = $this->db->get_where('data_voting', ['id_proyek' => $id_proyek]);
+        $data = $result->num_rows();
+
         echo json_encode($data);
     }
     public function set_data_voting()
@@ -290,16 +295,9 @@ class Project extends CI_Controller
         $jarak = $this->db->get_where('data_voting', ['id_proyek' => $data['id_proyek'], 'id_jarak' => $data['id_jarak']])->row_array();
 
         if (isset($jarak)) {
-            $this->db->where('id_proyek', $data['id_proyek']);
-            $this->db->where('id_jarak', $data['id_jarak']);
-            $result = $this->db->update('data_voting', $data);
-
-            $this->db->where('id_proyek', $dt['id_proyek']);
-            $this->db->where('id_jarak', $dt['id_jarak']);
-            $result = $this->db->update('data_voting', $dt);
+            $result = $this->m->set_voting($data, $dt, 'update');
         } else {
-            $result = $this->db->insert('data_voting', $data);
-            $result = $this->db->insert('data_voting', $dt);
+            $result = $this->m->set_voting($data, $dt, 'set');
         }
 
         echo json_encode($result);

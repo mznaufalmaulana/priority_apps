@@ -9,6 +9,8 @@
             <h5><?= $data_proyek['id_proyek'] ?></h5>
             <p><?= $data_proyek['deskripsi_proyek'] ?></p>
             <input type="text" value="<?= $data_proyek['id_proyek'] ?>" id="id_proyek" hidden>
+            <input type="text" id="daftarVoting" hidden>
+            <input type="text" id="jumlahVoting" value="<?= $data_voting ?>" hidden>
             <div class="row">
                 <div class="col col-md-12">
                     <div class="table-responsive table--no-card m-b-30 project-list">
@@ -78,6 +80,24 @@
             <div class="modal-footer">
                 <button class="btn btn-secondary" type="button" data-dismiss="modal" style="width:90px">Tidak</button>
                 <a href="<?= BASE_URL . 'result/index/' . $data_proyek['id_proyek'] ?>" class="btn btn-primary" id="btn-hitung" style="width:90px">Ya</a>
+                <!-- <button class="btn btn-primary" type="button" onclick="result('<?= $data_proyek['id_proyek'] ?>')" style="width:90px">Ya</button> -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="votingModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Peringatan!</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">Lakukan Proses Voting Terlebih Dahulu</div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-dismiss="modal" style="width:90px">Tutup</button>
             </div>
         </div>
     </div>
@@ -85,7 +105,15 @@
 </div>
 
 <script>
+    var isDisabledYa = '';
+    var isDisabledTidak = '';
+    var isDisabledSama = '';
+
     $(function() {
+        tampilVoting();
+    });
+
+    function tampilVoting() {
         var id_proyek = $('#id_proyek').val();
         $.ajax({
             type: 'ajax',
@@ -100,13 +128,13 @@
                 var html = '';
                 var i;
                 var j;
-                var no = 1;
+                var no = 0;
                 for (i = 0; i < data.length; i++) {
                     for (j = i; j < data.length; j++) {
                         if (data[i].id_kebutuhan != data[j].id_kebutuhan) {
                             html += '<tr class="' + data[i].id_kebutuhan + '-' + data[j].id_kebutuhan + '">' +
                                 '<td align = "center" >' +
-                                (no++) + '</td>' +
+                                (++no) + '</td>' +
                                 '<td>' +
                                 'Apakah <b>' + data[i].kalimat_kebutuhan + '</b> lebih penting daripada <b>' + data[j].kalimat_kebutuhan + '</b> ?' +
                                 '</td>' +
@@ -114,18 +142,37 @@
                                 '<input type="text" id="' + data[i].id_kebutuhan + '-' + data[j].id_kebutuhan + '" >' +
                                 '</td>' +
                                 '<td class = "text-center">' +
-                                '<button id = "ya" class = "btn btn-success btn-sm" style = "width:60px; margin: 3px;" onclick="ya(\'' + data[i].id_kebutuhan + '-' + data[j].id_kebutuhan + '\', \'' + data[j].id_kebutuhan + '-' + data[i].id_kebutuhan + '\')">Ya</button>' +
-                                '<button id = "tidak" class = "btn btn-danger btn-sm" style = "width:60px; margin: 3px;" onclick="tidak(\'' + data[i].id_kebutuhan + '-' + data[j].id_kebutuhan + '\', \'' + data[j].id_kebutuhan + '-' + data[i].id_kebutuhan + '\')"> Tidak </button>' +
-                                '<button id = "sama" class = "btn btn-warning btn-sm" style = "width:60px; margin: 3px;" onclick="sama(\'' + data[i].id_kebutuhan + '-' + data[j].id_kebutuhan + '\', \'' + data[j].id_kebutuhan + '-' + data[i].id_kebutuhan + '\')"> Sama </button>' +
+                                '<button id = "ya" class = "ya btn btn-success btn-sm" style = "width:60px; margin: 3px;" onclick="ya(\'' + data[i].id_kebutuhan + '-' + data[j].id_kebutuhan + '\', \'' + data[j].id_kebutuhan + '-' + data[i].id_kebutuhan + '\')" ' + isDisabledYa + '>Ya</button>' +
+                                '<button id = "tidak" class = "btn btn-danger btn-sm" style = "width:60px; margin: 3px;" onclick="tidak(\'' + data[i].id_kebutuhan + '-' + data[j].id_kebutuhan + '\', \'' + data[j].id_kebutuhan + '-' + data[i].id_kebutuhan + '\')" ' + isDisabledTidak + '> Tidak </button>' +
+                                '<button id = "sama" class = "btn btn-warning btn-sm" style = "width:60px; margin: 3px;" onclick="sama(\'' + data[i].id_kebutuhan + '-' + data[j].id_kebutuhan + '\', \'' + data[j].id_kebutuhan + '-' + data[i].id_kebutuhan + '\')" ' + isDisabledSama + '> Sama </button>' +
                                 '</td>' +
                                 '</tr>';
                         }
                     }
                 }
+                $('#daftarVoting').val(no * 2);
                 $('#data_kebutuhan').html(html);
+                jumlahVoting();
             }
         });
-    });
+    }
+
+    function jumlahVoting() {
+        var id_proyek = $('#id_proyek').val();
+        $.ajax({
+            type: 'ajax',
+            url: '<?= BASE_URL . 'project/get_total_voting' ?>',
+            async: false,
+            data: {
+                id_proyek: id_proyek
+            },
+            method: 'post',
+            dataType: 'json',
+            success: function(data) {
+                $('#jumlahVoting').val(data);
+            }
+        });
+    }
 
     function ya(id_kebutuhan, id_kebutuhan2) {
         var id_kebutuhan = id_kebutuhan;
@@ -148,7 +195,10 @@
             method: 'post',
             dataType: 'json',
             success: function(data) {
-                document.getElementByClassName(id_kebutuhan).style.color = "blue";
+                isDisabledYa = '';
+                isDisabledTidak = '';
+                isDisabledSama = '';
+                tampilVoting();
             }
         });
     }
@@ -172,7 +222,14 @@
                 status2: status2
             },
             method: 'post',
-            dataType: 'json'
+            dataType: 'json',
+            success: function(data) {
+                isDisabledYa = '';
+                isDisabledTidak = '';
+                isDisabledSama = '';
+                tampilVoting();
+
+            }
         });
     }
 
@@ -195,12 +252,24 @@
                 status2: status2
             },
             method: 'post',
-            dataType: 'json'
+            dataType: 'json',
+            success: function(data) {
+                isDisabledYa = '';
+                isDisabledTidak = '';
+                isDisabledSama = '';
+                tampilVoting();
+            }
         });
     }
 
     function hitung(id_proyek) {
         var id_proyek = id_proyek;
-        $('#hitungModal').modal('show');
+        var jumlahVoting = $('#jumlahVoting').val();
+        var daftarVoting = $('#daftarVoting').val();
+        if (jumlahVoting == daftarVoting) {
+            $('#hitungModal').modal('show');
+        } else {
+            $('#votingModal').modal('show');
+        }
     }
 </script>

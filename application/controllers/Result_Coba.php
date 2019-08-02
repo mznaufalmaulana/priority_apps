@@ -1,19 +1,18 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class Result extends CI_Controller
+class Result_Coba extends CI_Controller
 {
-    public function __construct()
-    {
-        parent::__construct();
-        $this->load->model('m_project', 'm');
-    }
 
     public function index()
     {
-        $id_proyek = $this->uri->segment(3, 0);
-
-        $data_acak = $this->m->get_data($id_proyek);
+        $id_proyek = 'PA20190505122111';
+        $this->db->select('id_kebutuhan');
+        $this->db->from('data_kebutuhan');
+        $this->db->where('id_proyek', $id_proyek);
+        $data_acak = $this->db->get()->result();
+        print_r($data_acak);
+        // die;
 
         $waktu_awal = time();
 
@@ -22,17 +21,32 @@ class Result extends CI_Controller
             $hasil = $this->get_kromosom($data_acak, $id_proyek);
             array_push($result, $hasil);
         }
+        $result = array(
+            0 => array(0 => 'R1-R5-R4-R3-R2-', 1 => 6),
+            1 => array(0 => 'R2-R3-R5-R4-R1-', 1 => 5),
+            2 => array(0 => 'R3-R2-R1-R5-R4-', 1 => 4),
+            3 => array(0 => 'R5-R4-R2-R1-R3-', 1 => 8),
+            4 => array(0 => 'R2-R5-R1-R4-R3-', 1 => 5)
+        );
+
+        echo '<br>';
+        // echo '<pre>';
+        print_r($result);
+        // echo '</pre>';
+        die;
 
         for ($i = 0; $i < 2000; $i++) {
             if (time() - $waktu_awal > 300) {
                 $data['prioritas'] = $result[0][0];
-                $result = $this->m->set_priority($id_proyek, $data);
-                redirect('project/result/' . $id_proyek);
+                echo "waktu habis";
                 die;
             } else if ($result[0][1] == 0) {
                 $data['prioritas'] = $result[0][0];
-                $result = $this->m->set_priority($id_proyek, $data);
-                redirect('project/result/' . $id_proyek);
+                echo '<br>';
+                echo 'Pada perulangan = ' . $i . ' dengan formasi urutan = ' . $result[0][0];
+                die;
+            } else if ($i == 2000) {
+                echo '<br> <br> Perhitungan Tidak Dijalankan';
                 die;
             }
             $angka = $this->random($result);
@@ -44,6 +58,24 @@ class Result extends CI_Controller
             $angka = $this->random($result);
             $mutasi4 = $this->mutasi($result[$angka], $id_proyek);
 
+            echo '<br>';
+            echo 'Mutasi 1 = ';
+            print_r($mutasi);
+            echo '<br>';
+            echo '<br>';
+            echo 'Mutasi 2 = ';
+            print_r($mutasi2);
+            echo '<br>';
+            echo '<br>';
+            echo 'Mutasi 3 = ';
+            print_r($mutasi3);
+            echo '<br>';
+            echo '<br>';
+            echo 'Mutasi 4 = ';
+            print_r($mutasi4);
+            echo '<br>';
+            echo '<br>';
+
             $indeks1 = $this->random($result);
             $indeks2 = $this->random($result);
             while ($indeks1 == $indeks2) {
@@ -52,6 +84,15 @@ class Result extends CI_Controller
             $crossover1 = $this->crossover($result[$indeks1], $result[$indeks2], $id_proyek);
             $crossover2 = $this->crossover($result[$indeks2], $result[$indeks1], $id_proyek);
 
+            echo 'Crossover 1 = ';
+            print_r($crossover1);
+            echo '<br>';
+            echo '<br>';
+            echo 'Crossover 2 = ';
+            print_r($crossover2);
+            echo '<br>';
+            echo '<br>';
+
             array_push($result, $mutasi);
             array_push($result, $mutasi2);
             array_push($result, $mutasi3);
@@ -59,7 +100,12 @@ class Result extends CI_Controller
             array_push($result, $crossover1);
             array_push($result, $crossover2);
 
+
             $result = $this->sort($result, $data_acak, $id_proyek);
+            echo 'Perulangan Ke-' . ($i + 1) . '<br>';
+            print_r($result);
+            echo '<br>';
+            // echo '<br>';
         }
     }
     private function get_kromosom($data, $id_proyek)

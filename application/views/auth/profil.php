@@ -20,7 +20,7 @@
                 <h3>Daftar Proyek Anda</h3>
                 <hr>
                 <?php foreach ($proyek as $value) { ?>
-                    <?= $value->nama_proyek ?><br>
+                    <b><?= $value->nama_proyek ?><br></b>
                     <?= TanggalIndonesia($value->tgl_proyek) ?>
                     <hr>
                 <?php } ?>

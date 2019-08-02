@@ -53,12 +53,9 @@ $kebutuhan = explode('-', $data_proyek['prioritas']);
         </div>
         <div class="card-footer">
             <div style="float:right;">
-                <a href="<?= BASE_URL . 'project/vote' ?>" class="btn btn-danger">
+                <a href="<?= BASE_URL . 'project/result_voting' ?>" class="btn btn-danger">
                     Kembali
                 </a>
-                <button class="btn btn-primary" onclick="simpan_project()">
-                    Hitung
-                </button>
             </div>
         </div>
     </div>
@@ -66,6 +63,12 @@ $kebutuhan = explode('-', $data_proyek['prioritas']);
 </div>
 </div>
 
-<script>
+<div id="loader"></div>
 
+<script>
+    var loading = document.getElementById('loader');
+
+    window.addEventListener('load', function() {
+        loading.style.display = "none";
+    });
 </script>
