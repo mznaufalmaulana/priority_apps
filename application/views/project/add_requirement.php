@@ -34,7 +34,7 @@ $data_kebutuhan = $this->db->get()->result();
                         <label for="pemilik" class=" form-control-label">Pemilik Kebutuhan</label>
                     </div>
                     <div class="col-12 col-md-9">
-                        <input type="text" id="pemilik" name="pemilik" placeholder="Masukkan Pemilik Kebutuhan" class="form-control">
+                        <input type="text" id="pemilik" name="pemilik" value="User" placeholder="Masukkan Pemilik Kebutuhan" class="form-control">
                     </div>
                 </div>
                 <div class="row form-group">
@@ -42,7 +42,7 @@ $data_kebutuhan = $this->db->get()->result();
                         <label for="kebutuhan" class=" form-control-label">Kalimat Kebutuhan</label>
                     </div>
                     <div class="col-12 col-md-8">
-                        <textarea id="kebutuhan" name="kebutuhan" placeholder="Masukkan Detail Kebutuhan" class="form-control" rows="5"></textarea><br>
+                        <textarea id="kebutuhan" name="kebutuhan" placeholder="Masukkan Detail Kebutuhan" class="form-control" rows="5" autofocus></textarea><br>
                         <p class="keterangan" style="margin-top:-20px; font-size: 10px; font-style:italic;">*) masukkan kebutuhan anda dan tekan tombol tambah</p>
                     </div>
                     <div class="col-12 col-md-1">

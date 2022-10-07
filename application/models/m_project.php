@@ -8,19 +8,14 @@ class m_project extends CI_Model
         $result = $this->db->insert('temp_data_kebutuhan', $data);
         return $result;
     }
-    function set_voting($data, $dt, $status)
+    function set_voting($data, $status)
     {
         if ($status == 'update') {
             $this->db->where('id_proyek', $data['id_proyek']);
             $this->db->where('id_jarak', $data['id_jarak']);
             $result = $this->db->update('data_voting', $data);
-
-            $this->db->where('id_proyek', $dt['id_proyek']);
-            $this->db->where('id_jarak', $dt['id_jarak']);
-            $result = $this->db->update('data_voting', $dt);
         } else {
             $result = $this->db->insert('data_voting', $data);
-            $result = $this->db->insert('data_voting', $dt);
         }
 
         return $result;

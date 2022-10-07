@@ -67,6 +67,8 @@ class Project extends CI_Controller
         $data['user'] = $this->db->get_where('data_user', ['id' => $id])->row_array();
         $data['judul'] = 'Priority Apps - Hitung Proyek';
         $data['judul_halaman'] = 'Hitung Proyek';
+		$data['options'] = $this->_data_voting();
+
         $this->load->view('templates/header', $data);
         $this->load->view('templates/sidebar', $data);
         $this->load->view('templates/topbar', $data);
@@ -91,6 +93,15 @@ class Project extends CI_Controller
         $this->db->from('data_kebutuhan');
         $this->db->where('id_proyek', $id_proyek);
         $data['data_kebutuhan'] = $this->db->get()->result();
+
+		$this->db->select('*');
+        $this->db->from('data_voting');
+        $this->db->where('id_proyek', $id_proyek);
+        $data['data_voting'] = $this->db->get()->result();
+
+		$data['options'] = $this->_data_voting();
+
+		// var_dump($data['options']);die;
 
         $this->load->view('templates/header', $data);
         $this->load->view('templates/sidebar', $data);
@@ -288,16 +299,12 @@ class Project extends CI_Controller
         $data['id_jarak'] = $this->input->post('id_kebutuhan');
         $data['status'] = $this->input->post('status');
 
-        $dt['id_proyek'] = $this->input->post('id_proyek');
-        $dt['id_jarak'] = $this->input->post('id_kebutuhan2');
-        $dt['status'] = $this->input->post('status2');
-
         $jarak = $this->db->get_where('data_voting', ['id_proyek' => $data['id_proyek'], 'id_jarak' => $data['id_jarak']])->row_array();
 
         if (isset($jarak)) {
-            $result = $this->m->set_voting($data, $dt, 'update');
+            $result = $this->m->set_voting($data, 'update');
         } else {
-            $result = $this->m->set_voting($data, $dt, 'set');
+            $result = $this->m->set_voting($data, 'set');
         }
 
         echo json_encode($result);
@@ -310,4 +317,81 @@ class Project extends CI_Controller
         $result = $this->db->delete('data_proyek');
         echo json_encode($result);
     }
+
+	private function _data_voting() {
+		$data1 = array();
+		$data1['value'] = '1';
+		$data1['option'] = 'Memiliki kepentingan yang sama';
+
+		$data2 = array();
+		$data2['value'] = '2';
+		$data2['option'] = 'Hanya sedikit lebih penting';
+
+		$data3 = array();
+		$data3['value'] = '3';
+		$data3['option'] = 'Sedikit lebih penting';
+
+		$data4 = array();
+		$data4['value'] = '4';
+		$data4['option'] = 'Cukup lebih penting';
+
+		$data5 = array();
+		$data5['value'] = '5';
+		$data5['option'] = 'Lebih penting';
+
+		$data6 = array();
+		$data6['value'] = '6';
+		$data6['option'] = 'Cukup jelas lebih penting';
+
+		$data7 = array();
+		$data7['value'] = '7';
+		$data7['option'] = 'Jelas lebih penting';
+
+		$data8 = array();
+		$data8['value'] = '8';
+		$data8['option'] = 'Cukup mutlak penting';
+
+		$data9 = array();
+		$data9['value'] = '9';
+		$data9['option'] = 'Mutlak penting';
+
+		// Negatif
+
+		$data10 = array();
+		$data10['value'] = '0.5';
+		$data10['option'] = 'Hanya sedikit tidak lebih penting';
+
+		$data11 = array();
+		$data11['value'] = '0.333';
+		$data11['option'] = 'Sedikit tidak lebih penting';
+
+		$data12 = array();
+		$data12['value'] = '0.25';
+		$data12['option'] = 'Tidak cukup lebih penting';
+
+		$data13 = array();
+		$data13['value'] = '0.2';
+		$data13['option'] = 'Tidak lebih penting';
+
+		$data14 = array();
+		$data14['value'] = '0.167';
+		$data14['option'] = 'Cukup jelas tidak lebih penting';
+
+		$data15 = array();
+		$data15['value'] = '0.143';
+		$data15['option'] = 'Jelas tidak lebih penting';
+
+		$data16 = array();
+		$data16['value'] = '0.125';
+		$data16['option'] = 'Cukup tidak mutlak penting';
+
+		$data17 = array();
+		$data17['value'] = '0.111';
+		$data17['option'] = 'Mutlak tidak penting';
+
+		$data = array($data1, $data2, $data3, $data4, $data5, $data6, $data7, $data8, $data9, $data10, $data11, $data12, $data13, $data14, $data15, $data16, $data17);
+
+		// print_r($data); die;
+		return $data;
+	}
 }

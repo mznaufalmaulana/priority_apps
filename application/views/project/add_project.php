@@ -11,8 +11,8 @@
                         <label for="id_project" class="form-control-label">Kode Proyek</label>
                     </div>
                     <div class="col-md-9">
-                        <input type="text" id="id_project1" name="id_project1" class="form-control" value="<?= 'PA' . date("Ymdhis") ?>" disabled>
-                        <input type="text" id="id_project" name="id_project" class="form-control" value="<?= 'PA' . date("Ymdhis") ?>" hidden>
+                        <input type="text" id="id_project" name="id_project" class="form-control" value="<?= 'PA' . date("Ymdhis") ?>">
+                        <!-- <input type="text" id="id_project" name="id_project" class="form-control" value="<?= 'PA' . date("Ymdhis") ?>" hidden> -->
                     </div>
                 </div>
                 <div class="row form-group">

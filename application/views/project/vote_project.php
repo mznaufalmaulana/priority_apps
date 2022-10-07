@@ -31,7 +31,8 @@ $data_proyek = $this->db->get()->result();
                         <td><?= substr($val->deskripsi_proyek, 0, 90) . '...'  ?></td>
                         <td>
                             <a href="<?= BASE_URL . 'project/voting/' . $val->id_proyek ?>" class="btn btn-primary btn-sm">
-                                Hitung Proyek
+                                <!-- Hitung Proyek -->
+								Voting Proyek
                             </a>
                             <button id="hapus_proyek" class="btn btn-danger btn-sm" onclick="hapus_temp_proyek('<?= $val->id_proyek ?>')">
                                 Hapus
