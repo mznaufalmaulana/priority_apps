@@ -1,9 +1,12 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-define('HOST_URL', "http://localhost/");    
-define('BASE_URL', "http://localhost/priority_apps/");
-define('BASE_THEME', "http://localhost/priority_apps/assets/");
+define('HOST_URL', "http://e93a-140-213-219-6.ngrok.io/");    
+define('BASE_URL', "http://e93a-140-213-219-6.ngrok.io/priority_apps/");
+define('BASE_THEME', "http://e93a-140-213-219-6.ngrok.io/priority_apps/assets/");
+// define('HOST_URL', "http://localhost/");    
+// define('BASE_URL', "http://localhost/priority_apps/");
+// define('BASE_THEME', "http://localhost/priority_apps/assets/");
 /*
 |--------------------------------------------------------------------------
 | Display Debug backtrace

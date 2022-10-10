@@ -317,6 +317,22 @@ class Project extends CI_Controller
         $result = $this->db->delete('data_proyek');
         echo json_encode($result);
     }
+	public function result_ahp()
+	{
+		$id_proyek = $this->input->post('id_proyek');
+
+		// var_dump($id_proyek);die;
+
+		$this->db->select('*');
+        $this->db->from('data_voting');
+        $this->db->where('id_proyek', $id_proyek);
+        $this->db->order_by('id_jarak', "asc");
+        $result = $this->db->get()->result();
+		
+		// var_dump($result);die;
+
+		echo json_encode($result);
+	}
 
 	private function _data_voting() {
 		$data1 = array();

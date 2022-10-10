@@ -18,7 +18,7 @@
 								<?= $this->session->flashdata('message') ?>
 								<form action="<?= BASE_URL . 'auth/' ?>" method="post" class="user">
 									<div class="form-group">
-										<input type="text" class="form-control form-control-user" name="username" id="username" placeholder="Masukkan Username..." value="admin">
+										<input type="text" class="form-control form-control-user" name="username" id="username" placeholder="Masukkan Username..." autofocus>
 										<?= form_error('username', '<small class="text-danger pl-3">', '</small>') ?>
 									</div>
 									<div class="form-group">
