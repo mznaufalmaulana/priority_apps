@@ -26,6 +26,11 @@ if ($isLogin == '') {
   <link href=<?= BASE_THEME . "css/sb-admin-2.css" ?> rel="stylesheet">
   <script src=<?= BASE_THEME . "vendor/jquery/jquery.min.js" ?>></script>
 
+	<script src="https://cdn.tiny.cloud/1/z9pa3j34kuvrg3wuo62g6tdj0flzrds04xgth9avs3idj6ga/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+
+	<script src="https://code.jquery.com/jquery-3.1.0.js"></script>
+	<script src="//cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+	<link rel="stylesheet" href="//cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css" />
 </head>
 
 <body id="page-top">

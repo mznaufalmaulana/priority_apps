@@ -23,7 +23,7 @@ class Project extends CI_Controller
 
         if ($this->form_validation->run() == false) {
             $id = $this->session->userdata('id');
-            $data['user'] = $this->db->get_where('data_user', ['id' => $id])->row_array();
+            $data['user'] = $this->db->get_where('dt_user', ['id' => $id])->row_array();
             $data['judul'] = 'Priority Apps - Tambah Proyek';
             $data['judul_halaman'] = 'Tambah Proyek';
             $this->load->view('templates/header', $data);
@@ -39,7 +39,7 @@ class Project extends CI_Controller
     public function Draft()
     {
         $id = $this->session->userdata('id');
-        $data['user'] = $this->db->get_where('data_user', ['id' => $id])->row_array();
+        $data['user'] = $this->db->get_where('dt_user', ['id' => $id])->row_array();
         $data['judul'] = 'Priority Apps - Draft Proyek';
         $data['judul_halaman'] = 'Draft Proyek';
         $this->load->view('templates/header', $data);
@@ -52,7 +52,7 @@ class Project extends CI_Controller
     {
         $id_proyek = $this->uri->segment(3, 0);
         $id = $this->session->userdata('id');
-        $data['user'] = $this->db->get_where('data_user', ['id' => $id])->row_array();
+        $data['user'] = $this->db->get_where('dt_user', ['id' => $id])->row_array();
         $data['judul'] = 'Priority Apps - Draft Proyek';
         $data['judul_halaman'] = 'Draft Proyek';
         $this->load->view('templates/header', $data);
@@ -64,7 +64,7 @@ class Project extends CI_Controller
     public function Vote()
     {
         $id = $this->session->userdata('id');
-        $data['user'] = $this->db->get_where('data_user', ['id' => $id])->row_array();
+        $data['user'] = $this->db->get_where('dt_user', ['id' => $id])->row_array();
         $data['judul'] = 'Priority Apps - Hitung Proyek';
         $data['judul_halaman'] = 'Hitung Proyek';
 		$data['options'] = $this->_data_voting();
@@ -78,7 +78,7 @@ class Project extends CI_Controller
     public function Voting()
     {
         $id = $this->session->userdata('id');
-        $data['user'] = $this->db->get_where('data_user', ['id' => $id])->row_array();
+        $data['user'] = $this->db->get_where('dt_user', ['id' => $id])->row_array();
         $data['judul'] = 'Priority Apps - Hitung Proyek';
         $data['judul_halaman'] = 'Hitung Proyek';
 
@@ -112,7 +112,7 @@ class Project extends CI_Controller
     public function Result_Voting()
     {
         $id = $this->session->userdata('id');
-        $data['user'] = $this->db->get_where('data_user', ['id' => $id])->row_array();
+        $data['user'] = $this->db->get_where('dt_user', ['id' => $id])->row_array();
         $data['judul'] = 'Priority Apps - Hasil Perhitungan';
         $data['judul_halaman'] = 'Hasil Perhitungan';
         $this->load->view('templates/header', $data);
@@ -124,7 +124,7 @@ class Project extends CI_Controller
     public function Result()
     {
         $id = $this->session->userdata('id');
-        $data['user'] = $this->db->get_where('data_user', ['id' => $id])->row_array();
+        $data['user'] = $this->db->get_where('dt_user', ['id' => $id])->row_array();
         $data['judul'] = 'Priority Apps - Hasil Perhitungan';
         $data['judul_halaman'] = 'Hasil Perhitungan';
 

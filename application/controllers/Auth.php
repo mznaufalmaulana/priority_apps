@@ -37,7 +37,7 @@ class Auth extends CI_Controller
     $username = $this->input->post('username');
     $password = $this->input->post('password');
 
-    $user = $this->db->get_where('data_user', ['username' => $username])->row_array();
+    $user = $this->db->get_where('dt_user', ['username' => $username])->row_array();
 
     if ($user != null) {
       if (password_verify($password, $user['password'])) {
@@ -61,11 +61,11 @@ class Auth extends CI_Controller
     $this->form_validation->set_rules('nama_depan', 'Nama_Depan', 'required|trim', [
       'required' => "Field Tidak Boleh Kosong"
     ]);
-    $this->form_validation->set_rules('username', 'Username', 'required|trim|is_unique[data_user.username]', [
+    $this->form_validation->set_rules('username', 'Username', 'required|trim|is_unique[dt_user.username]', [
       'required' => "Field Tidak Boleh Kosong",
       'is_unique' => "Username Telah Digunakan"
     ]);
-    $this->form_validation->set_rules('email', 'Email', 'required|trim|valid_email|is_unique[data_user.email]', [
+    $this->form_validation->set_rules('email', 'Email', 'required|trim|valid_email|is_unique[dt_user.email]', [
       'required' => "Field Tidak Boleh Kosong",
       'is_unique' => "Email Telah Terdaftar",
       'valid_email' => "Email yang Dimasukkan Tidak Sesuai"
@@ -85,12 +85,12 @@ class Auth extends CI_Controller
     } else {
       $data = [
         'username' => htmlspecialchars($this->input->post('username', true)),
-        'nama_depan' => htmlspecialchars($this->input->post('nama_depan', true)),
-        'nama_belakang' => htmlspecialchars($this->input->post('nama_belakang', true)),
+        'first_name' => htmlspecialchars($this->input->post('nama_depan', true)),
+        'last_name' => htmlspecialchars($this->input->post('nama_belakang', true)),
         'email' => htmlspecialchars($this->input->post('email', true)),
         'password' => password_hash($this->input->post('password1'), PASSWORD_DEFAULT)
       ];
-      $this->db->insert('data_user', $data);
+      $this->db->insert('dt_user', $data);
       $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert"> Selamat! Akun Anda Berhasil Terdaftar, Silahkan Lakukan Login untuk Dapat Menggunakan Sistem </div>');
       redirect('/auth');
     }
@@ -98,7 +98,7 @@ class Auth extends CI_Controller
   public function profil()
   {
     $id = $this->session->userdata('id');
-    $data['user'] = $this->db->get_where('data_user', ['id' => $id])->row_array();
+    $data['user'] = $this->db->get_where('dt_user', ['id' => $id])->row_array();
     $data['judul'] = 'Priority Apps - Profil';
     $data['judul_halaman'] = 'Profil';
 
@@ -115,13 +115,13 @@ class Auth extends CI_Controller
   }
   public function edit_profil()
   {
-    $this->form_validation->set_rules('password', 'Password', 'required|trim|matches[data_user.password]', [
+    $this->form_validation->set_rules('password', 'Password', 'required|trim|matches[dt_user.password]', [
       'required' => "Masukkan Kata Sandi Anda",
       'matches' => "Maaf! Kata Sandi Salah"
     ]);
 
     $id = $this->session->userdata('id');
-    $data['user'] = $this->db->get_where('data_user', ['id' => $id])->row_array();
+    $data['user'] = $this->db->get_where('dt_user', ['id' => $id])->row_array();
     if ($this->form_validation->run() == false) {
       $data['judul'] = 'Priority Apps - Edit Profil';
       $data['judul_halaman'] = 'Profil';
@@ -133,14 +133,14 @@ class Auth extends CI_Controller
       $this->load->view('templates/footer', $data);
     } else {
       $password = $this->input->post('password');
-      $user = $this->db->get_where('data_user', ['id' => $id])->row_array();
+      $user = $this->db->get_where('dt_user', ['id' => $id])->row_array();
       if (password_verify($password, $user['password'])) {
         $data = [
           'nama_depan' => htmlspecialchars($this->input->post('nama_depan', true)),
           'nama_belakang' => htmlspecialchars($this->input->post('nama_belakang', true))
         ];
         $this->db->where('id', $id);
-        $this->db->update('data_user', $data);
+        $this->db->update('dt_user', $data);
         redirect('auth/profil');
       }
     }

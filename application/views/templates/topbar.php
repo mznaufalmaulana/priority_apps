@@ -12,9 +12,9 @@
             <i class="fa fa-bars"></i>
           </button>
 
-          <div class="">
+          <!-- <div class="">
             <h5><?= $judul_halaman ?></h5>
-          </div>
+          </div> -->
 
           <!-- Topbar Navbar -->
           <ul class="navbar-nav ml-auto">
@@ -31,7 +31,7 @@
             <!-- Nav Item - User Information -->
             <li class="nav-item dropdown no-arrow">
               <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <span class="mr-2 d-none d-lg-inline text-gray-600 small"><?= $user['nama_depan'] . ' ' . $user['nama_belakang'] ?></span>
+                <span class="mr-2 d-none d-lg-inline text-gray-600 small"><?= $user['first_name'] . ' ' . $user['last_name'] ?></span>
                 <img class="img-profile rounded-circle" src="<?= BASE_THEME . 'images/icon/user.png' ?>">
               </a>
               <!-- Dropdown - User Information -->

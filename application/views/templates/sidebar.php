@@ -1,5 +1,5 @@
     <!-- Sidebar -->
-    <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+    <ul class="navbar-nav bg-gradient-default sidebar sidebar-light accordion" id="accordionSidebar">
 
       <!-- Sidebar - Brand -->
       <a class="sidebar-brand d-flex align-items-center justify-content-center" href="#">
@@ -21,14 +21,21 @@
 
       <!-- Heading -->
       <div class="sidebar-heading">
-        Proyek
+        Konten
       </div>
 
       <!-- Nav Item - Pages Collapse Menu -->
       <li class="nav-item">
-        <a class="nav-link" href="<?= BASE_URL . 'project' ?>">
-          <i class="fas fa-fw fa-plus"></i>
-          <span>Tambah Proyek</span>
+        <a class="nav-link pb-0" href="<?= BASE_URL . 'event' ?>">
+          <i class="fas fa-fw fa-list"></i>
+          <span>Daftar Event</span>
+        </a>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link" href="<?= BASE_URL . 'mitra' ?>">
+          <i class="fas fa-fw fa-store"></i>
+          <span>Mitra</span>
         </a>
       </li>
 
@@ -37,27 +44,13 @@
 
       <!-- Heading -->
       <div class="sidebar-heading">
-        Daftar Proyek
+        Pertanyaan
       </div>
 
       <li class="nav-item">
-        <a class="nav-link pb-0" href="<?= BASE_URL . 'project/draft' ?>">
-          <i class="fas fa-fw fa-folder"></i>
-          <span>Draft Proyek</span>
-        </a>
-      </li>
-
-      <li class="nav-item">
-        <a class="nav-link pb-0" href="<?= BASE_URL . 'project/vote' ?>">
-          <i class="fas fa-fw fa-signal"></i>
-          <span>Hitung Proyek</span>
-        </a>
-      </li>
-
-      <li class="nav-item">
-        <a class="nav-link" href="<?= BASE_URL . 'project/result_voting' ?>">
-          <i class="fas fa-fw fa-chart-area"></i>
-          <span>Hasil Perhitungan Proyek</span>
+        <a class="nav-link" href="<?= BASE_URL . 'question' ?>">
+          <i class="fas fa-fw fa-comments"></i>
+          <span>Daftar Pertanyaan</span>
         </a>
       </li>
 
